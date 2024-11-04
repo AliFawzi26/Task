@@ -45,15 +45,16 @@ class ProductCard extends StatelessWidget {
                       return IconButton(
                         onPressed: () {
                           controller.isFavorite(product.data.id)
-                              ? controller.addToFavorites(product)
-                              : controller.removeFromFavorites(product);
+                              ? controller.removeFromFavorites(product)
+                              : controller.addToFavorites(product);
                         },
-                        icon: SvgPicture.asset(
-                          AppImage.favorite,
-                          height: 20,
+                        icon: Icon(
+                          controller.isFavorite(product.data.id)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
                           color: controller.isFavorite(product.data.id)
                               ? Colors.red
-                              : Colors.white,
+                              : Colors.grey,
                         ),
                       );
                     },

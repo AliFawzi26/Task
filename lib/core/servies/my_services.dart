@@ -13,14 +13,9 @@ class MyServices extends GetxService {
 
   Future<MyServices> initialize() async {
     shared = await SharedPreferences.getInstance();
-    ProductModel? favorite = await getFavorite();
 
-    if (favorite != null) {
-      ConstData.favorite = favorite;
-    } else {
-      print('User info is null, handle accordingly');
-    }
-    ;
+
+ 
 
     return this;
   }
@@ -55,28 +50,17 @@ class MyServices extends GetxService {
     return null;
   }
 
-  Future<ProductModel?> getFavorite() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? favoriteJson = prefs.getString('favorite');
-
-    if (favoriteJson != null && favoriteJson.isNotEmpty) {
-      return ProductModel.fromJson(jsonDecode(favoriteJson));
-    }
-
-    return null;
+  Future<void> saveFavorites(List<ProductModel> favorites) async {
+    List<String> favoritesJson = favorites.map((e) => jsonEncode(e.toJson())).toList();
+    await shared.setStringList('favorites', favoritesJson);
   }
 
-  Future<void> saveFavorite(ProductModel favorite) async {
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      String favoriteJson = jsonEncode(favorite.toJson());
-
-      await prefs.setString('favorite', favoriteJson);
-      print(' favorite is ......');
-      print(favorite);
-    } catch (e) {
-      print("Error saving favorite info: $e");
+  Future<List<ProductModel>> getFavorites() async {
+    List<String>? favoritesJson = shared.getStringList('favorites');
+    if (favoritesJson != null) {
+      return favoritesJson.map((e) => ProductModel.fromJson(jsonDecode(e))).toList();
     }
+    return [];
   }
 
   Future<void> saveUserInfo(UserModel user) async {

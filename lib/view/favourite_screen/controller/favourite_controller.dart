@@ -10,20 +10,27 @@ class FavoriteController extends GetxController {
   List<ProductModel> favorites = [];
 
   @override
-  void onInit() async{
-    favorites!= await MyServices().getFavorite();
+  void onInit() async {
+    await loadFavorites();
     super.onInit();
   }
 
-  void addToFavorites(ProductModel product) {
-    favorites.add(product);
-    MyServices().saveFavorite(product);
+  Future<void> loadFavorites() async {
+    favorites = await MyServices().getFavorites();
     update();
   }
 
+  void addToFavorites(ProductModel product) {
+    if (!isFavorite(product.data.id)) {
+      favorites.add(product);
+      MyServices().saveFavorites(favorites);
+      update();
+    }
+  }
+
   void removeFromFavorites(ProductModel product) {
-    favorites.removeWhere((product) => product.data.id == product.data.id);
-    MyServices().saveFavorite(product);
+    favorites.removeWhere((p) => p.data.id == product.data.id);
+    MyServices().saveFavorites(favorites);
     update();
   }
 
@@ -31,3 +38,4 @@ class FavoriteController extends GetxController {
     return favorites.any((product) => product.data.id == id);
   }
 }
+
