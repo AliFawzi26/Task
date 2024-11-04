@@ -10,6 +10,6 @@ class InitialBinding extends Bindings {
     Get.put(Crud());
     Get.put(TShirtController());
 
-    Get.put(FavouriteController());
+    Get.put(FavoriteController());
   }
 }

@@ -88,7 +88,7 @@ class OrderPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 final quantity = int.tryParse(quantityController.text) ?? 0;
-                controller.updateOrder(order.id!, quantity);
+                controller.updateOrder(order.id, quantity);
                 Navigator.of(context).pop();
               },
               child: Text('Update'),

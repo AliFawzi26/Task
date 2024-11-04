@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:focal2/model/product_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +13,9 @@ class MyServices extends GetxService {
 
   Future<MyServices> initialize() async {
     shared = await SharedPreferences.getInstance();
+
+
+ 
 
     return this;
   }
@@ -44,6 +48,19 @@ class MyServices extends GetxService {
     }
 
     return null;
+  }
+
+  Future<void> saveFavorites(List<ProductModel> favorites) async {
+    List<String> favoritesJson = favorites.map((e) => jsonEncode(e.toJson())).toList();
+    await shared.setStringList('favorites', favoritesJson);
+  }
+
+  Future<List<ProductModel>> getFavorites() async {
+    List<String>? favoritesJson = shared.getStringList('favorites');
+    if (favoritesJson != null) {
+      return favoritesJson.map((e) => ProductModel.fromJson(jsonDecode(e))).toList();
+    }
+    return [];
   }
 
   Future<void> saveUserInfo(UserModel user) async {

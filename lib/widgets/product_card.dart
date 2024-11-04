@@ -39,22 +39,25 @@ class ProductCard extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GetBuilder<FavouriteController>(
-                    init: FavouriteController(),
-
-    builder: (controller) {
-
-    return IconButton(
-    onPressed: () {
-     
-    },
-    icon: SvgPicture.asset(
-    AppImage.favorite,
-    height: 20,
-
-    ),
-    );
-    },
+                  GetBuilder<FavoriteController>(
+                    init: FavoriteController(),
+                    builder: (controller) {
+                      return IconButton(
+                        onPressed: () {
+                          controller.isFavorite(product.data.id)
+                              ? controller.removeFromFavorites(product)
+                              : controller.addToFavorites(product);
+                        },
+                        icon: Icon(
+                          controller.isFavorite(product.data.id)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: controller.isFavorite(product.data.id)
+                              ? Colors.red
+                              : Colors.grey,
+                        ),
+                      );
+                    },
                   ),
                   Image.asset(
                     AppImage.t_shirt2,

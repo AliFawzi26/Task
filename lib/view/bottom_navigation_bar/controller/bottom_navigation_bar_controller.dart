@@ -18,7 +18,7 @@ class BottomNavigationBarController extends GetxController {
 
   final List<Widget> screens = [
     HomeScreen(),
-    FavouriteScreen(),
+    FavoriteScreen(),
     Center(
       child: Text('notification'),
     ),
